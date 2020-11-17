@@ -1,0 +1,15 @@
+transformers==2.5.1
+nltk==3.4.5
+py-rouge==1.1
+pre-commit==2.2.0
+sentence-transformers==0.3.8
+scikit-learn==0.23.2
+scikit-learn-extra==0.1.0
+
+# PYTORCH (without CPU)
+## for MacOS:
+##https://download.pytorch.org/whl/cpu/torch-1.0.0-cp36-none-macosx_10_7_x86_64.whl
+## for Windows
+### https://download.pytorch.org/whl/cpu/torch-1.0.0-cp36-cp36m-win_amd64.whl
+## for Linux
+### https://download.pytorch.org/whl/cpu/torch-1.0.0-cp36-cp36m-linux_x86_64.whl 

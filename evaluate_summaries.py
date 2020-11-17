@@ -50,7 +50,7 @@ def evaluate(path_to_gen_summaries, path_to_human_summaries):
     str_scores = format_rouge_scores(scores)
     save_rouge_scores(str_scores, len_scores)
 
-    print(scores)
+    print(str_scores)
 
 
 def evaluate_length_factor(gen_summaries, reference_summaries):
@@ -72,7 +72,7 @@ def procure_and_sort_summaries(path):
     summary_ids = find_summary_ids(summary_files)
     tuple_list = list(zip(summaries, summary_ids))
     tuple_list_sorted = sorted(tuple_list, key=lambda tup: tup[1])
-    return tuple_list_sorted # tuple : (summary, summary_id)
+    return tuple_list_sorted  # tuple : (summary, summary_id)
 
 
 def save_rouge_scores(str_scores, len_scores):
@@ -106,18 +106,35 @@ if __name__ == "__main__":
     parser.add_argument(
         "--heuristic",
         default=None,
+        required=True,
         type=int,
         help="Define the heuristic you want to apply for processing long texts (larger than 512 tokens)."
              "1 stands for splitting the text, summarizing the parts and then summarizing summaries,"
-             "2 stands for splitting the text, summarizing the parts, cluster sentences and select the centers in each cluster,"
-             "3 : separate text, cluster sentences and select the centers in each cluster, summarize,"
-             "4 : separate text, summarize, treat sentences as keyphrases in Embedrank with diversity (MRM),"
-             "5 : clustering only and picking 4 medoids,"
-             "6 : Embedrank with diversity (MRM) only, 4 key sentences"
+             "2 stands for splitting the text, summarizing the parts, clustering sentences and select the centers in each cluster,"
+             "3 stands for splitting the text, summarizing the parts, applying Maximal Marginal Relevance"
     )
-    args = parser.parse_args()
+    parser.add_argument(
+        "--path_ref",
+        default=None,
+        type=str,
+        help="Path to reference summaries"
+    )
+    parser.add_argument(
+        "--path_gen",
+        default=None,
+        type=str,
+        help="Path to automatically generated summaries"
+    )
 
-    PATH_TO_GENERATED_SUMMARIES = os.path.join("experiments", f"heuristic{args.heuristic}_complete")
-    PATH_TO_HUMAN_SUMMARIES = os.path.join("experiments", "reference")
+    args = parser.parse_args()
+    if not args.path_ref:
+        PATH_TO_HUMAN_SUMMARIES = os.path.join("experiments", "reference")
+    else:
+        PATH_TO_HUMAN_SUMMARIES = args.path_ref
+
+    if not args.path_gen:
+        PATH_TO_GENERATED_SUMMARIES = os.path.join("experiments", f"heuristic{args.heuristic}_complete")
+    else:
+        PATH_TO_GENERATED_SUMMARIES = args.path_gen
 
     evaluate(PATH_TO_GENERATED_SUMMARIES, PATH_TO_HUMAN_SUMMARIES)

@@ -8,6 +8,7 @@ import logging
 
 logging.getLogger().setLevel(logging.INFO)
 
+
 def preprocess_narratives(narrative):
     """
     Cleans up the narratives for better summarization
@@ -71,7 +72,7 @@ def find_summary_ids(summaries):
     return summary_ids
 
 
-def compare_ids(pool_of_narratives_ids, pool_of_summaries_ids):
+def compare_ids(pool_of_narratives_ids, pool_of_summaries_ids) -> list:
     """Finds which narrative IDs are not yet among the summary IDs and thus need to be summarized."""
     to_summarize = []
     for i in pool_of_narratives_ids:
@@ -84,8 +85,6 @@ def add_file_to_temp(path, file_name):
     temp_path = os.path.join(path, "temp")
     if not os.path.exists(temp_path):
         os.makedirs(temp_path)
-    contents = read_file_contents(os.path.join(path, file_name))
-    extension = file_name.split(".")[0]
 
 
 def add_unprocessed_files_to_temp(path):
@@ -163,11 +162,6 @@ def save_narratives(file_with_documents, file_with_labels, amount, from_index=0)
         logging.info("  Files will be saved to: ({})".format(path))
         for i in narratives[from_index:(from_index+amount)]:
             file_name = os.path.join(path, "narrative_{}_raw.txt".format(n))
-            # print("NARRATIVE " + str(n))
-            # print(i)
-            # command = input()
-            # if command == "":
-            #    continue
             while os.path.exists(file_name):
                 n += 1
                 file_name = os.path.join(path, "narrative_{}_raw.txt".format(n))
@@ -182,13 +176,6 @@ def save_narratives(file_with_documents, file_with_labels, amount, from_index=0)
         n = from_index
         for i in labels[from_index:amount]:
             file_name = "bertabs/gold/label_{}.txt".format(n)
-            # print("NARRATIVE " + str(n))
-            # print(i)
-            # command = input()
-            # if command == "":
-            #    continue
-            # else:
-            #     break
             with open(file_name, "w", encoding="utf-8") as document:
                 document.write(i)
             n += 1
@@ -213,21 +200,9 @@ def count_lengths(path):
 def plot_lengths():
     """
     Determine the optimal shortest narrative length.
-    :return:
     """
     raw = find_all_narratives("bertabs/data")
     summaries = find_all_summaries("bertabs/data")
-    #raw_ids = find_raw_ids(raw)
-    #summary_ids = find_summary_ids(summaries)
-    #to_exclude = compare_ids(raw_ids, summary_ids)
-
-    #to_plot_ids = compare_ids(raw_ids, to_exclude)
-    #to_plot = []
-    #for i in raw:
-    #    for id in to_plot_ids:
-    #        if id in i:
-    #            to_plot.append(i)
-
     summaries_lengths = []
     for i in summaries:
         summary = read_file_contents(join("bertabs/data", i))
@@ -248,8 +223,7 @@ def plot_lengths():
     plt.plot([1, 600], [230, 230]) # the line indicating an optimal boundary for skipping the summarization task
     plt.ylabel('X: summary lengths, Y: corresponding narrative lengths')
     plt.show()
-    # all the points below the blue line have their summaries longer than the narratives themselves, which cannot be
-    # ToDo: threshold defined as 230: do not produce a summary if the length is below that
+
 
 def evaluate_quality(path):
     scores = [file for file in listdir(path) if isfile(join(path, file)) and "score" in file]
