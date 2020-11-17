@@ -151,7 +151,7 @@ def find_cluster_centres(text, num_clusters):
 
 class Heuristic2:
     """
-    --- SumClus#4 ---
+    --- SumClus ---
     Summarize the chunks of text which are shorter than the token limit and then cluster all the sentences into 4
     clusters and combine their Medoids to get one representative summary.
     """
@@ -202,62 +202,6 @@ class Heuristic3:
         return summary
 
 
-class Heuristic4:
-    """
-    --- Clus#4Only ---
-    Cluster all the sentences into 4 clusters and combine their Medoids to get one representative summary.
-    """
-    @staticmethod
-    def process(args, text, id, narrative_storage_path, tokenizer, token_limit):
-        # cluster sentences and find cluster centres
-        cluster_centers = find_cluster_centres(text, num_clusters=4)
-        # return a summary
-        summary = " ".join(cluster_centers)
-        return summary
-
-class Heuristic5:
-    """
-    --- MMROnly ---
-    Select 4 most representative sentences with the MMR algorithm, as in SumMMR, combine them to get one summary.
-    """
-    @staticmethod
-    def process(args, text, id, narrative_storage_path, tokenizer, token_limit):
-        # apply EmbedRank with Diversity (MMR)
-        candidates = nltk.sent_tokenize(text)
-        candidates_embedded = embedder.encode(candidates)
-        key_sentences, _ = MMR(text, candidates, candidates_embedded, 0.5, 4, embedder)
-        summary = " ".join(key_sentences)
-        return summary
-
-class Heuristic6:
-    """
-    --- MMR with subsequent summarization ---
-    Select 5 most representative sentences with the MMR algorithm, as in SumMMR, combine them and summarize to get one summary.
-    """
-    @staticmethod
-    def process(args, text, id, narrative_storage_path, tokenizer, token_limit):
-        # apply EmbedRank with Diversity (MMR)
-        candidates = nltk.sent_tokenize(text)
-        candidates_embedded = embedder.encode(candidates)
-        key_sentences, _ = MMR(text, candidates, candidates_embedded, 0.5, 5, embedder)
-        summary = " ".join(key_sentences)
-        path_to_summaries = split_and_summarize_chunks(args, summary, id, narrative_storage_path, tokenizer, token_limit)
-        summary_files = find_all_summaries(path_to_summaries)
-        summaries_combined = combine_chunks(summary_files, path_to_summaries)
-        # for each of the summaries: concatenate, check if less than 510 tokens, otherwise split again, summarize again
-        while len(summary_files) > 1:
-            path_to_summaries = split_and_summarize_chunks(args, summaries_combined, id, path_to_summaries, tokenizer,
-                                                           token_limit)
-            summary_files = find_all_summaries(path_to_summaries)
-            summaries_combined = combine_chunks(summary_files, path_to_summaries)
-        # return the original path
-        args.documents_dir = narrative_storage_path
-        # delete the temp
-        delete_temp(args.documents_dir)
-        # return a summary
-        return summaries_combined
-
-
 def summarization_pipeline(args):
     """
     The main function for running summarization of long texts based on a given heuristic.
@@ -284,10 +228,7 @@ def summarization_pipeline(args):
 available_heuristics = {
     1: Heuristic1,
     2: Heuristic2,
-    3: Heuristic3,
-    4: Heuristic4,
-    5: Heuristic5,
-    6: Heuristic6
+    3: Heuristic3
 }
 
 

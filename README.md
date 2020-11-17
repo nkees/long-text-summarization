@@ -5,3 +5,8 @@ Slides to the Talk: tba.
 Authors: Nataliia Kees (qdive GmbH), Clemens Kraus (qdive GmbH) @ck-real
 
 https://predictiveanalyticsworld.de/programm/
+
+Credits (initial):
+Transformer library: https://github.com/huggingface/transformers
+MMR implementation: https://github.com/swisscom/ai-research-keyphrase-extraction
+Sentence Encoders: https://github.com/nkees/sentence-transformers
