@@ -15,7 +15,7 @@ Run `requirements.txt` in your virtual environment. This is perfectly compatible
 When using the heuristics, you can change the document directory to some other one, in our case we called it "experiments".
 2 . Run the following command to produce the summaries
 ```
-python run_summarization.py --documents_dir data --no_cuda true --batch_size 4 --min_length 50 --max_length 200 --beam_size 5 --alpha 0.95 --block_trigram true
+python bertabs/run_summarization.py --documents_dir ../data --no_cuda true --batch_size 4 --min_length 50 --max_length 200 --beam_size 5 --alpha 0.95 --block_trigram true
 ```
 With heuristics:
 ```
