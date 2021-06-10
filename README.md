@@ -1,8 +1,8 @@
 # long-text-summarization
 
 Code to my Talks:
-- "Text Summarization with Transformer Models - Exploring New Frontiers in NLP", AI@Enterprise Summit, June 10, 2021 (Author of the Slides: Nataliia Kees (qdive GmbH)), https://predictiveanalyticsworld.de/programm/
-- "Summarizing Large Texts – a Deep Dive into NLP with Bidirectional Encoders", Predictive Analytics World (PAW) Conference, November 17, 2020 (Authors of the Slides: Nataliia Kees (qdive GmbH), Clemens Kraus (qdive GmbH) @ck-real), https://aisummit.today/agenda/
+- "Text Summarization with Transformer Models - Exploring New Frontiers in NLP", AI@Enterprise Summit, June 10, 2021 (Author of the Slides: Nataliia Kees (qdive GmbH)), https://aisummit.today/agenda/
+- "Summarizing Large Texts – a Deep Dive into NLP with Bidirectional Encoders", Predictive Analytics World (PAW) Conference, November 17, 2020 (Authors of the Slides: Nataliia Kees (qdive GmbH), Clemens Kraus (qdive GmbH) @ck-real), https://predictiveanalyticsworld.de/programm/
 
 
 
